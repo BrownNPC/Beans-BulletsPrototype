@@ -17,6 +17,7 @@ type ScreenIngameState struct {
 	Input struct {
 		CurrentMouse  rl.Vector2
 		MouseVelocity rl.Vector2
+		TargetMouse   rl.Vector2
 		MouseDelta    rl.Vector2
 		MouseSpring   gfx.Spring
 
@@ -28,7 +29,7 @@ type ScreenIngameState struct {
 	ViewDistance float32
 
 	initTime     time.Time
-	ElapsedTicks uint64
+	ElapsedTicks uint
 }
 
 func (state *ScreenIngameState) Init() {
@@ -44,18 +45,18 @@ func (state *ScreenIngameState) Init() {
 	})
 	state.Input.MouseSpring = gfx.NewSpring(1, .5, .2)
 	state.ViewDistance = 512
-	rl.HideCursor()
+	rl.DisableCursor()
 }
 func (state *ScreenIngameState) Update() {
 	state.ProcessInput()
+	state.ElapsedTicks = uint(time.Since(state.initTime).Seconds())
 
 	plr := things.Get(state.Plr).(*t.Player)
 	*plr = plr.Tick(rl.GetFrameTime(), t.PlayerTickConfig{
 		Cursor:     state.Input.CurrentMouse,
 		MoveVector: state.Input.Movement,
 	})
-
-	state.Cam.Zoom = (float32(rl.GetRenderHeight()) / 2) / state.ViewDistance
+	state.Cam.Zoom = (float32(min(rl.GetRenderHeight(), rl.GetRenderWidth())) / 2) / state.ViewDistance
 	state.Render()
 }
 

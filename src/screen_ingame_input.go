@@ -5,14 +5,20 @@ import (
 )
 
 func (state *ScreenIngameState) ProcessInput() {
-	dt := rl.GetFrameTime()
 	input := &state.Input
+	input.TargetMouse = input.TargetMouse.Add(rl.GetMouseDelta())
+	input.TargetMouse = input.TargetMouse.Clamp(
+		rl.GetScreenToWorld2D(rl.NewVector2(0, 0), state.Cam),
+		rl.GetScreenToWorld2D(rl.NewVector2(float32(rl.GetRenderWidth()), float32(rl.GetRenderHeight())), state.Cam),
+	)
+
+	dt := rl.GetFrameTime()
 	input.accum += dt
 	const tickrate = 60
 	var mouseDelta rl.Vector2
 	for input.accum >= 1.0/tickrate {
 		input.accum -= 1.0 / tickrate
-		target := rl.GetScreenToWorld2D(rl.GetMousePosition(), state.Cam)
+		target := input.TargetMouse
 		x, vx := state.Input.MouseSpring.Update(state.Input.CurrentMouse.X, input.MouseVelocity.X, target.X)
 		y, vy := state.Input.MouseSpring.Update(state.Input.CurrentMouse.Y, input.MouseVelocity.Y, target.Y)
 		input.MouseVelocity = rl.NewVector2(float32(vx), float32(vy))

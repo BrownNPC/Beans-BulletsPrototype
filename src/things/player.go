@@ -44,12 +44,11 @@ type PlayerTickConfig struct {
 
 func (plr Player) Tick(dt float32, cfg PlayerTickConfig) Player {
 	plr = plr.ApplyMovement(dt, cfg.MoveVector, cfg.Cursor)
-
 	return plr
 }
 
-func (plr Player) StartSliding(tick uint64) Player {
-
+func (plr Player) StartSliding(tick uint) Player {
+	
 	return plr
 }
 func (plr Player) ApplyMovement(dt float32, move rl.Vector2, cursor rl.Vector2) Player {
