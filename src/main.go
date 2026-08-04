@@ -15,7 +15,6 @@ const (
 func main() {
 	rl.SetConfigFlags(rl.FlagWindowResizable | rl.FlagVsyncHint)
 	rl.InitWindow(0, 0, "Prototype")
-	rl.HideCursor()
 	gfx.InitVirtualScreen(screenX, screenY)
 
 	var state ScreenIngameState
@@ -25,9 +24,7 @@ func main() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Black)
 		{
-			// gfx.BeginDrawingVirtualScreen()
 			state.Update()
-			// gfx.EndDrawingVirtualScreen()
 		}
 		rl.EndDrawing()
 	}
