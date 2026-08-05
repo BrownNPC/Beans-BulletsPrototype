@@ -13,7 +13,7 @@ const (
 )
 
 func main() {
-	rl.SetConfigFlags(rl.FlagWindowResizable | rl.FlagVsyncHint)
+	rl.SetConfigFlags(rl.FlagWindowResizable | rl.FlagVsyncHint | rl.FlagWindowHighdpi)
 	rl.InitWindow(0, 0, "Prototype")
 	gfx.InitVirtualScreen(screenX, screenY)
 
