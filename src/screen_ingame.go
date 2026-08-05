@@ -63,17 +63,14 @@ func (state *ScreenIngameState) Update() {
 func (state *ScreenIngameState) Render() {
 	rl.ClearBackground(rl.RayWhite)
 	plr := things.Get(state.Plr).(*t.Player)
-	topCorner:= rl.GetWorldToScreen2D(plr.Position.SubtractValue(state.ViewRadius), state.Cam)
-	size := rl.NewVector2(state.ViewRadius*state.Cam.Zoom, state.ViewRadius*state.Cam.Zoom).Scale(2)
-	rl.DrawRectangle(int32(topCorner.X), int32(topCorner.Y), int32(size.X), int32(size.Y), rl.Red)
 	rl.BeginMode2D(state.Cam)
 	// draw map floor
 	gfx.DrawTextureTiled(gfx.GetTexture(gfx.Texture_Prototype_Grid),
-		rl.NewRectangle(-1024/2, -1024/2, 1024*2, 1024),
+		rl.NewRectangle(-1024/2, -1024/2, 1024*6, 1024*6),
 		1, rl.White,
 	)
+	rl.EndMode2D()
 	rl.BeginMode2D(state.Cam)
-	// rl.EndScissorMode()
 
 	rl.DrawCircleV(plr.Position, plr.Size/2, rl.Red)
 	rl.DrawRectanglePro(
